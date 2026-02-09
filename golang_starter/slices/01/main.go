@@ -22,21 +22,32 @@ import (
 var myarray = 
 */
 
-// func main() {
-// 	arr1 := [6]int{10, 11, 12, 13, 14,15}
-// 	myslice := arr1[2:4]
-  
-// 	fmt.Printf("myslice = %v\n", myslice)
-// 	fmt.Printf("length = %d\n", len(myslice))
-// 	fmt.Printf("capacity = %d\n", cap(myslice))
-//   }
+func main() {
+	arr1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	mySlice := arr1[2:5]
+
+	fmt.Println("s1", mySlice)
+	fmt.Println("len(s1)", len(mySlice))
+	fmt.Println("cap(s1)", cap(mySlice))
+  }
 
 /* 
 3. creating a slice With The make() Function
 */
 
-func main () {
-	slice1 := make([]int, 5, 10)
-	fmt.Println(slice1, "slice1")
-	fmt.Println("cap", cap(slice1))
-}
+// func makeSlice() {
+// 	data := []int{1, 2, 3, 4 , 5}
+// 	for index, value := range data {
+// 		fmt.Printf("Index: %d, Value: %d\n", index, value)
+// 	}
+// }
+
+// func main () {
+// 	makeSlice()
+// 	slice1 := make([]int, 5, 10)
+// 	//it is important to know the capacity doubles when there is a new memory allocation
+// 	fmt.Println(slice1, "slice1")
+// 	fmt.Println("cap", cap(slice1))
+
+// }
