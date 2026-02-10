@@ -31,7 +31,7 @@ func NewBankAccount() *BankAccount{
 
 func (b *BankAccount) readAccount() int32 {
 	b.mu.RLock()
-	defer b.mu.RLock()
+	defer b.mu.RUnlock()
 	return b.balance
 } 
 
@@ -45,11 +45,17 @@ func (b *BankAccount) Deposit(value int) int32 {
 
 func startProcess (p *BankAccount) {
 	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
 	for {
 		fmt.Println(">deposit money", p.Deposit(100))
 		<- ticker.C
 	}
 }
+
+// retries, dedupe, ordering and idempotency
+// latency and throughput - bursty traffic, queuing
+//observability - tracing across services, audit trails and SLA monitoring
+
 
 //withdraw
 
@@ -61,11 +67,15 @@ func  (b *BankAccount) withDraw(value int32) int32 {
 }
 
 func WithDrawProcess (b *BankAccount) {
-	ticker := time.NewTicker(time.Millisecond * 500)
+	ticker := time.NewTicker(time.Millisecond * 300)
+	defer ticker.Stop()
 	for {
 		balance := b.readAccount()
 		if balance > 0 {
-			fmt.Println(">withdrawing money", b.withDraw(50))
+			value := 50
+			if balance >= int32(value) {
+				fmt.Println(">withdrawing money", b.withDraw(int32(value)))
+			}
 			break;
 		}
 		<- ticker.C

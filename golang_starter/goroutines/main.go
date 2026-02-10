@@ -25,7 +25,7 @@ type Container struct {
 type Vessels struct {
 	id int
 	name string
-	trackingId int
+	trackingId int //trackingId
 }
 
 func (c *Container) updateContainer() error {
@@ -101,6 +101,77 @@ func processFleet (cargos []Cargo) error {
 	wg.Wait()
 	return nil
 }
+
+func sliceToChannel(nums []int) <-chan int {
+	out := make(chan int)
+	go func() {
+		for _, n := range nums {
+			out <- n
+		}
+		close(out)
+	}()
+	return out
+}
+
+func sq(dataCh <-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		for n := range dataCh {
+			out <- n * n
+		}
+		close(out)
+	}()
+	return out
+}
+
+// func greet(name string) {
+// 	fmt.Println(name, "num")
+// }
+
+// func main() {
+// 	msgChannel := make(chan int)
+// 	anotherChannel := make(chan string)
+// 	go func() {
+// 		msgChannel <- 123
+// 	}()
+// 	go func() {
+// 		anotherChannel <- "data"
+// 	}()
+
+// 	select {
+// 	case myMsgChannel := <-msgChannel:
+// 		fmt.Println("C", myMsgChannel)
+// 	case myAnotherChannel := <-anotherChannel:
+// 		fmt.Println("C", myAnotherChannel)
+// 	}
+// }
+
+/*
+1. a select statement is going to block until one of the cases gets run
+2. to enable asynchronous communication between channels, use a buffered channel by specifying a opacity
+*/
+
+// func greet(name string) {
+// 	fmt.Println(name, "num")
+// }
+
+// func main() {
+// 	msgChannel := make(chan int)
+// 	anotherChannel := make(chan string)
+// 	go func() {
+// 		msgChannel <- 123
+// 	}()
+// 	go func() {
+// 		anotherChannel <- "data"
+// 	}()
+
+// 	select {
+// 	case myMsgChannel := <-msgChannel:
+// 		fmt.Println("C", myMsgChannel)
+// 	case myAnotherChannel := <-anotherChannel:
+// 		fmt.Println("C", myAnotherChannel)
+// 	}
+// }
 
 func main() {
 	load := []Cargo{
