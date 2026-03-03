@@ -13,16 +13,15 @@ func greet(msg string, wg *sync.WaitGroup) {
 
  
 
-
-
-
 func main() {
 	fmt.Println("Start")
 	var wg sync.WaitGroup
-	wg.Add(3)
-	go greet("say hello", &wg)
-	go greet("say hello", &wg)
-	go greet("say hello", &wg)
+	totalJobs := 5
+
+	for i := 1; i < totalJobs; i++ {
+		wg.Add(1)
+		greet(fmt.Sprintf("%d: say hello", i), &wg)
+	}
 	//communicaates with the main thread to wait before exiting finally
 	wg.Wait()
 	fmt.Println("end")
