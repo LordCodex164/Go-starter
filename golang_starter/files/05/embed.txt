@@ -1,0 +1,1 @@
+Go is a programming language that allows you to embed static assets into your go program
