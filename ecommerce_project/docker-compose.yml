@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image:postgres:15.1-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  localstack:
+    image:localstack/localstack:latest
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    ports:
+      - ${LOCALSTACK_PORT}:4566
+    volumes:
+      - localstack_data:/tmp/localstack/data
+
+volumes:
+  postgres_data:
+  localstack_data:
